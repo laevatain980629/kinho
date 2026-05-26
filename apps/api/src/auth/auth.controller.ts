@@ -2,6 +2,7 @@ import { Controller, Post, Body, Get, UseGuards, Request } from '@nestjs/common'
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { Permissions } from '../common/decorators/permissions.decorator';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -9,7 +10,7 @@ export class AuthController {
 
   @Post('login')
   async login(
-    @Body() body: { username: string; password: string },
+    @Body() body: LoginDto,
     @Request() req: { ip?: string; headers: Record<string, string | string[] | undefined> },
   ) {
     return this.authService.login(body.username, body.password, {

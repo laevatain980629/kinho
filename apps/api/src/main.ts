@@ -25,7 +25,16 @@ async function bootstrap() {
   const platformMiddleware = new PlatformMiddleware();
   app.use(platformMiddleware.use.bind(platformMiddleware));
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    transform: true,
+    forbidNonWhitelisted: true,
+    forbidUnknownValues: true,
+    exceptionFactory: (errors) => {
+      const messages = errors.map(err => Object.values(err.constraints || {}).join(', ')).filter(Boolean);
+      return new (require('@nestjs/common').BadRequestException)(messages.join('; ') || '输入数据格式错误');
+    },
+  }));
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const prisma = app.get(PrismaService);
@@ -46,6 +55,6 @@ async function bootstrap() {
   }
 
   const port = Number(process.env.PORT || 3000);
-  await app.listen(port, '0.0.0.0');
+  await app.listen(port, '127.0.0.1');
 }
 bootstrap();
