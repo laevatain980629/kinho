@@ -19,9 +19,12 @@ export function validateActionForm(
         continue;
       }
       // required select/engineer-select/outlet-select must be positive number
-      if ((field.type === 'select' || field.type === 'outlet-select' || field.type === 'engineer-select') && typeof value === 'number' && value <= 0) {
-        errors[field.name] = `请选择${field.label}`;
-        continue;
+      if (field.type === 'select' || field.type === 'outlet-select' || field.type === 'engineer-select') {
+        const numericValue = typeof value === 'number' || typeof value === 'string' ? Number(value) : undefined;
+        if (numericValue !== undefined && !Number.isNaN(numericValue) && numericValue <= 0) {
+          errors[field.name] = `请选择${field.label}`;
+          continue;
+        }
       }
     }
 
