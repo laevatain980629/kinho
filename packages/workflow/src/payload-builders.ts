@@ -62,5 +62,7 @@ export function buildSubmitReceiptPayload(form: Record<string, unknown>, ctx: { 
     partItems: Array.isArray(form.partsUsed) && form.partsUsed.length > 0 ? JSON.stringify(form.partsUsed) : undefined,
     chargeItems: charges.length > 0 ? JSON.stringify(charges) : undefined,
     totalAmount: totalAmount > 0 ? totalAmount : undefined,
+    afterRepairPhotos: Array.isArray(form.afterRepairPhotos) ? form.afterRepairPhotos.filter(Boolean) : undefined,
+    warrantyNote: trim(form.warrantyNote),
   };
 }
