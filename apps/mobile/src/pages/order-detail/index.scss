@@ -1,0 +1,85 @@
+.order-detail {
+  &__body { padding: 24px 32px; }
+  &__card {
+    background: var(--surface); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px;
+  }
+  &__card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  &__no { font-size: 36px; font-weight: bold; display: block; }
+  &__title { font-size: 24px; color: var(--muted); display: block; }
+  &__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  &__chip {
+    padding: 4px 16px; border-radius: 32px;
+    &.bg-gray { background: var(--status-gray-bg); .order-detail__chip-text { color: var(--status-gray-text); } }
+    &.bg-amber { background: var(--status-amber-bg); .order-detail__chip-text { color: var(--status-amber-text); } }
+    &.bg-blue { background: var(--status-blue-bg); .order-detail__chip-text { color: var(--status-blue-text); } }
+    &.bg-green { background: var(--status-green-bg); .order-detail__chip-text { color: var(--status-green-text); } }
+    &.bg-red { background: var(--status-red-bg); .order-detail__chip-text { color: var(--status-red-text); } }
+  }
+  &__chip-text { font-size: 22px; font-weight: 500; }
+  &__info { display: flex; flex-wrap: wrap; margin-top: 24px; }
+  &__info-item { font-size: 24px; width: 50%; margin-bottom: 8px; }
+  &__addr { font-size: 24px; color: var(--muted); margin-top: 8px; display: block; }
+  &__subtitle { font-size: 20px; color: var(--muted); display: block; opacity: 0.6; }
+
+  &__remark {
+    background: var(--surface-secondary); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 16px; margin-top: 12px;
+  }
+  &__remark-label { font-size: 22px; font-weight: 600; color: var(--accent); display: block; margin-bottom: 4px; }
+  &__remark-text { font-size: 26px; color: var(--fg); display: block; }
+  &__input {
+    width: 100%; height: 72px; padding: 0 16px; border-radius: var(--radius-md);
+    border: 1px solid var(--border); background: var(--field-background);
+    color: var(--field-foreground); font-size: 28px; box-sizing: border-box; margin-bottom: 16px;
+  }
+  &__label { font-size: 26px; color: var(--muted); display: block; margin-bottom: 8px; }
+  &__field { margin-bottom: 16px; }
+
+  &__held-banner {
+    background: #f59e0b10; border: 1px solid #f59e0b40;
+    border-radius: var(--radius-md); padding: 20px; margin-top: 16px;
+  }
+  &__held-title { font-size: 28px; font-weight: 600; color: #f59e0b; display: block; margin-bottom: 8px; }
+  &__held-reason { font-size: 26px; color: var(--muted); display: block; }
+
+  &__actions { margin-bottom: 16px; }
+  &__btn {
+    height: 88px; border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+    &:active { opacity: 0.8; }
+    &--primary { background: var(--accent); }
+    &--secondary { background: var(--surface-secondary); border: 1px solid var(--border); }
+    &--danger { background: #e53e3e; .order-detail__btn-text { color: #fff; } }
+  }
+  &__btn-text { color: var(--accent-foreground); font-size: 32px; font-weight: 500; }
+  &__btn-text2 { font-size: 32px; font-weight: 500; }
+
+  &__escalate {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px;
+  }
+  &__textarea {
+    width: 100%; min-height: 120px; padding: 16px; border-radius: var(--radius-md);
+    border: 1px solid var(--border); background: var(--field-background);
+    color: var(--field-foreground); font-size: 28px; box-sizing: border-box;
+  }
+  &__escalate-btn {
+    height: 72px; border-radius: var(--radius-md); background: var(--accent);
+    display: flex; align-items: center; justify-content: center; margin-top: 16px;
+    &--disabled { opacity: 0.4; }
+  }
+
+  &__section-title { font-size: 28px; font-weight: 500; display: block; margin-bottom: 16px; }
+  &__timeline { position: relative; padding-left: 8px; }
+  &__timeline-line { position: absolute; left: 5px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
+  &__timeline-step { position: relative; margin-bottom: 24px; }
+  &__timeline-dot {
+    position: absolute; left: -8px; top: 4px;
+    width: 20px; height: 20px; border-radius: 50%; background: var(--border);
+    &--current { background: var(--warning); }
+    &--done { background: var(--success); }
+  }
+  &__timeline-label { font-size: 24px; margin-left: 20px; font-weight: 500; }
+  &__timeline-label--current { color: var(--warning); }
+  &__timeline-sub { font-size: 22px; color: var(--muted); margin-left: 20px; display: block; }
+}

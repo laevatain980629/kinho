@@ -1,0 +1,35 @@
+.report {
+  min-height: 100vh; background: var(--background); padding-bottom: 80px;
+
+  &__header { text-align: center; padding: 80px 40px 40px; }
+  &__logo {
+    width: 120px; height: 120px; border-radius: 32px;
+    background: linear-gradient(135deg, var(--accent), #6366f1);
+    color: var(--accent-foreground); font-size: 48px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 32px;
+  }
+  &__title { font-size: 44px; font-weight: bold; display: block; }
+  &__subtitle { font-size: 26px; color: var(--muted); display: block; margin-top: 8px; }
+
+  &__form { padding: 0 32px; }
+  &__card { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 12px; }
+  &__label { font-size: 24px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 12px; }
+  &__input { width: 100%; height: 80px; padding: 0 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--field-background); color: var(--field-foreground); font-size: 28px; box-sizing: border-box; }
+  &__textarea { width: 100%; min-height: 160px; padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--field-background); color: var(--field-foreground); font-size: 28px; box-sizing: border-box; }
+  &__counter { text-align: right; font-size: 24px; color: var(--muted); margin-top: 8px; display: block; }
+  &__error { font-size: 22px; color: var(--danger); display: block; margin-top: 8px; }
+  &__submit { height: 88px; border-radius: var(--radius-md); background: var(--accent); display: flex; align-items: center; justify-content: center; margin-top: 24px; &:active { opacity: 0.8; } &--disabled { opacity: 0.4; } }
+  &__submit-text { color: var(--accent-foreground); font-size: 32px; font-weight: 500; }
+
+  &__success { display: flex; flex-direction: column; align-items: center; padding: 120px 40px; text-align: center; }
+  &__success-icon { width: 128px; height: 128px; border-radius: 50%; background: rgba(34, 197, 94, 0.1); color: var(--success); font-size: 64px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+  &__success-title { font-size: 44px; font-weight: bold; margin-top: 32px; display: block; }
+  &__success-card { background: var(--surface-secondary); border-radius: var(--radius-xl); padding: 24px 48px; margin-top: 24px; }
+  &__success-label { font-size: 24px; color: var(--muted); display: block; }
+  &__success-no { font-size: 36px; font-weight: bold; color: var(--accent); display: block; margin-top: 8px; }
+  &__success-desc { font-size: 26px; color: var(--muted); margin-top: 24px; display: block; }
+  &__success-actions { margin-top: 48px; width: 100%; }
+  &__reset-btn { height: 88px; border-radius: var(--radius-md); background: var(--accent); display: flex; align-items: center; justify-content: center; &:active { opacity: 0.8; } }
+  &__reset-text { color: var(--accent-foreground); font-size: 32px; font-weight: 500; }
+}

@@ -1,0 +1,8 @@
+.signature {
+  &__body { padding: 24px 32px; padding-bottom: 120px; }
+  &__card { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+  &__card-title { font-size: 28px; font-weight: 500; display: block; margin-bottom: 16px; }
+  &__info { font-size: 24px; color: var(--muted); display: block; }
+  &__submit { height: 88px; border-radius: var(--radius-md); background: var(--accent); display: flex; align-items: center; justify-content: center; margin-top: 16px; &:active { opacity: 0.8; } &--disabled { opacity: 0.4; } }
+  &__submit-text { color: var(--accent-foreground); font-size: 32px; font-weight: 500; }
+}

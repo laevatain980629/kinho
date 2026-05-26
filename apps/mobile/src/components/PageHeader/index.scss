@@ -1,0 +1,44 @@
+.page-header {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  height: 96px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &__back {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary);
+    font-size: 28px;
+    font-weight: 600;
+    min-width: 100px;
+  }
+
+  &__back-icon {
+    font-size: 36px;
+    line-height: 1;
+    font-weight: 400;
+  }
+
+  &__back-text {
+    font-size: 28px;
+  }
+
+  &__title {
+    flex: 1;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--foreground);
+    letter-spacing: 0.01em;
+  }
+
+  &__spacer {
+    min-width: 100px;
+  }
+}

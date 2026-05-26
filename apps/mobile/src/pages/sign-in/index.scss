@@ -1,0 +1,16 @@
+.sign-in {
+  &__body { padding: 24px 32px; padding-bottom: 120px; }
+  &__card { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+  &__loc-row { display: flex; align-items: center; gap: 16px; }
+  &__loc-icon { font-size: 40px; }
+  &__loc-info { flex: 1; }
+  &__loc-label { font-size: 28px; font-weight: 500; display: block; }
+  &__loc-value { font-size: 24px; color: var(--muted); display: block; margin-top: 4px; }
+  &__loc-btn { padding: 12px 32px; border-radius: var(--radius-md); background: var(--surface-secondary); border: 1px solid var(--border); &:active { opacity: 0.7; } }
+  &__loc-btn-text { font-size: 28px; font-weight: 500; }
+  &__label { font-size: 24px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 12px; }
+  &__required { color: var(--danger); font-size: 24px; }
+  &__textarea { width: 100%; min-height: 120px; padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--field-background); color: var(--field-foreground); font-size: 28px; box-sizing: border-box; }
+  &__submit { height: 88px; border-radius: var(--radius-md); background: var(--accent); display: flex; align-items: center; justify-content: center; margin-top: 16px; &:active { opacity: 0.8; } &--disabled { opacity: 0.4; } }
+  &__submit-text { color: var(--accent-foreground); font-size: 32px; font-weight: 500; }
+}

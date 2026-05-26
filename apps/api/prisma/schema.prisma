@@ -1,0 +1,679 @@
+// PostgreSQL is the only supported database for development, testing, and production.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── 组织与权限模型 ──────────────────────────────────────
+
+model User {
+  id                Int       @id @default(autoincrement())
+  username          String    @unique
+  password          String
+  name              String
+  phone             String
+  email             String?
+  role              String
+  outletId          Int?
+  outlet            Outlet?   @relation(fields: [outletId], references: [id])
+  status            String    @default("ACTIVE")
+  lastLoginAt       DateTime?
+  lastLoginPlatform String?
+  pwdResetAt        DateTime?
+  remark            String?
+  createdById       Int?
+  failedLoginCount  Int       @default(0)
+  lockedUntil       DateTime?
+  mustChangePwd     Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  userRoles              UserRole[]
+  workOrderHistories     WorkOrderHistory[] @relation("Operator")
+  createdWorkOrders      WorkOrder[]        @relation("Creator")
+  assignedWorkOrders     WorkOrder[]        @relation("WorkOrderEngineer")
+  createdCustomerRequests CustomerRequest[] @relation("RequestCreator")
+  woEngineerAssignments  WorkOrderEngineer[] @relation("WOEngineer")
+  woEngineerAssigners    WorkOrderEngineer[] @relation("WOEngineerAssigner")
+  createdQuotes          Quote[]            @relation("QuoteCreator")
+  approvedQuotes         Quote[]            @relation("QuoteApprover")
+  approvalApplications   Approval[]         @relation("ApprovalApplicant")
+  approvalDecisions      Approval[]         @relation("ApprovalApprover")
+  escalationApplications Escalation[]       @relation("EscalationApplicant")
+  escalationDecisions    Escalation[]       @relation("EscalationApprover")
+  escalationResolutions  Escalation[]       @relation("EscalationResolver")
+  followUpAssignments    FollowUp[]         @relation("FollowUpSpecialist")
+}
+
+model Role {
+  id              Int      @id @default(autoincrement())
+  key             String   @unique
+  name            String
+  type            String   @default("BUILTIN")
+  description     String?
+  isLocked        Boolean  @default(false)
+  status          String   @default("ACTIVE")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  userRoles       UserRole[]
+  rolePermissions RolePermission[]
+}
+
+model Permission {
+  id              Int      @id @default(autoincrement())
+  key             String   @unique
+  name            String
+  type            String   @default("FUNCTION")
+  module          String?
+  isLocked        Boolean  @default(false)
+  status          String   @default("ACTIVE")
+  createdAt       DateTime @default(now())
+
+  rolePermissions RolePermission[]
+}
+
+model UserRole {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  roleId    Int
+  role      Role     @relation(fields: [roleId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, roleId])
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  roleId       Int
+  role         Role       @relation(fields: [roleId], references: [id])
+  permissionId Int
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  createdAt    DateTime   @default(now())
+
+  @@unique([roleId, permissionId])
+}
+
+// ─── 资产模型 ────────────────────────────────────────────
+
+model Outlet {
+  id        Int       @id @default(autoincrement())
+  name      String
+  code      String    @unique
+  address   String?
+  phone     String?
+  manager   String?
+  managerId Int?
+  status    String    @default("ACTIVE")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  users     User[]
+  customers Customer[]
+  machines  Machine[]
+  warehouses Warehouse[]
+  workOrders WorkOrder[]
+}
+
+model Customer {
+  id           Int       @id @default(autoincrement())
+  name         String
+  contactName  String?
+  contactPhone String
+  outletId     Int
+  outlet       Outlet    @relation(fields: [outletId], references: [id])
+  address      String?
+  customerType String    @default("ENTERPRISE")
+  remark       String?
+  status       String    @default("ACTIVE")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  machines     Machine[]
+  workOrders   WorkOrder[]
+}
+
+model Machine {
+  id           Int       @id @default(autoincrement())
+  serialNo     String    @unique
+  machineCode  String?
+  brand        String?
+  model        String
+  type         String?
+  customerId   Int
+  customer     Customer  @relation(fields: [customerId], references: [id])
+  outletId     Int?
+  outlet       Outlet?   @relation(fields: [outletId], references: [id])
+  currentHours Float?
+  qrCode       String?
+  purchaseDate DateTime?
+  warrantyStartDate DateTime?
+  warrantyEndDate DateTime?
+  warrantyMonths Int?
+  warrantyPolicy String?
+  warrantyRemark String?
+  status       String    @default("ACTIVE")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  workOrders   WorkOrder[]
+}
+
+// ─── 报修申请 ────────────────────────────────────────────
+
+model CustomerRequest {
+  id                 Int       @id @default(autoincrement())
+  requestNo          String    @unique
+  customerName       String
+  phone              String
+  company            String?
+  address            String
+  latitude           Float?
+  longitude          Float?
+  locationAccuracy   Float?
+  machineSerial      String?
+  machineCode        String?
+  machineModel       String?
+  faultDesc          String
+  faultPhotos        String?
+  source             String    @default("CUSTOMER_H5")
+  status             String    @default("SUBMITTED")
+  workOrderId        Int?
+  creatorId          Int?
+  creator            User?     @relation("RequestCreator", fields: [creatorId], references: [id])
+  ip                 String?
+  userAgent          String?
+  submitFingerprint  String?
+  rejectReason       String?
+  createdAt          DateTime  @default(now())
+}
+
+// ─── 工单主模型 ──────────────────────────────────────────
+
+model WorkOrder {
+  id                     Int       @id @default(autoincrement())
+  orderNo                String    @unique
+  title                  String
+  customerTitleSnapshot  String?
+  officialTitle          String?
+  acceptRemark           String?
+  description            String?
+  state                  String    @default("CREATED")
+  stateEnteredAt         DateTime  @default(now())
+  priority               String
+  outletId               Int?
+  outlet                 Outlet?   @relation(fields: [outletId], references: [id])
+  engineerId             Int?
+  engineer               User?     @relation("WorkOrderEngineer", fields: [engineerId], references: [id])
+  customerId             Int?
+  customer               Customer? @relation(fields: [customerId], references: [id])
+  machineId              Int?
+  machine                Machine?  @relation(fields: [machineId], references: [id])
+  creatorId              Int?
+  creator                User?     @relation("Creator", fields: [creatorId], references: [id])
+  customerNameSnapshot   String
+  customerPhoneSnapshot  String
+  serviceAddressSnapshot String
+  machineSerialSnapshot  String?
+  machineModelSnapshot   String?
+  faultDesc              String
+  faultTypeIdsJson       String?
+  faultTypeNamesSnapshot String?
+  faultCause             String?
+  faultPhotos            String?
+  suggestedRepairPlan    String?
+  needQuote              Boolean   @default(false)
+  needParts              Boolean   @default(false)
+  needProcurement        Boolean   @default(false)
+  source                 String
+  warrantyExpiry         DateTime?
+  isUnderWarranty        Boolean?
+  warrantyStatus         String?
+  warrantyPolicySnapshot String?
+  warrantyStartSnapshot  DateTime?
+  warrantyEndSnapshot    DateTime?
+  warrantyJudgedAt       DateTime?
+  warrantyOverrideReason String?
+  estimatedCost          Decimal?
+  blockReason            String?
+  activeBlocks           String?
+  holdReason             String?   // 挂起原因（不改变主状态）
+  holdStatus             String?   // 'HELD' | null
+  acceptedAt             DateTime?
+  outletAssignedAt       DateTime?
+  engineerAssignedAt     DateTime?
+  signedInAt             DateTime?
+  faultConfirmedAt       DateTime?
+  repairStartedAt        DateTime?
+  receiptSubmittedAt     DateTime?
+  customerSignedAt       DateTime?
+  completedAt            DateTime?
+  closedAt               DateTime?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  engineers              WorkOrderEngineer[]
+  receipts               RepairReceipt[]
+  histories              WorkOrderHistory[]
+  quotes                 Quote[]
+  partsRequests          PartsRequest[]
+  partsReturns           PartsReturn[]
+  procurementRequests    ProcurementRequest[]
+  escalations            Escalation[]
+  followUps              FollowUp[]
+}
+
+model WorkOrderEngineer {
+  id           Int       @id @default(autoincrement())
+  workOrderId  Int
+  workOrder    WorkOrder @relation(fields: [workOrderId], references: [id])
+  engineerId   Int
+  engineer     User      @relation("WOEngineer", fields: [engineerId], references: [id])
+  roleInOrder  String    @default("PRIMARY")
+  assignedAt   DateTime  @default(now())
+  assignedBy   Int?
+  assigner     User?     @relation("WOEngineerAssigner", fields: [assignedBy], references: [id])
+}
+
+// ─── 维修回执 ────────────────────────────────────────────
+
+model RepairReceipt {
+  id             Int       @id @default(autoincrement())
+  workOrderId    Int
+  workOrder      WorkOrder @relation(fields: [workOrderId], references: [id])
+  repairSummary  String
+  repairItems    String?
+  partItems      String?
+  chargeItems    String?
+  totalAmount    Decimal?
+  customerName   String?
+  customerPhone  String?
+  signatureUrl   String?
+  signedAt       DateTime?
+  signedByName   String?
+  signedOnDevice String?
+  status         String    @default("DRAFT")
+  createdById    Int
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+// ─── 工单历史 ────────────────────────────────────────────
+
+model WorkOrderHistory {
+  id           Int       @id @default(autoincrement())
+  workOrderId  Int
+  workOrder    WorkOrder @relation(fields: [workOrderId], references: [id])
+  action       String
+  fromState    String?
+  toState      String?
+  operatorId   Int?
+  operator     User?     @relation("Operator", fields: [operatorId], references: [id])
+  operatorName String?
+  operatorRole String?
+  platform     String?
+  reason       String?
+  payload      String?
+  createdAt    DateTime  @default(now())
+}
+
+// ─── 工单子流程模型 ──────────────────────────────────────
+
+model Quote {
+  id                   Int       @id @default(autoincrement())
+  quoteNo              String    @unique
+  workOrderId          Int
+  workOrder            WorkOrder @relation(fields: [workOrderId], references: [id])
+  version              Int       @default(1)
+  creatorId            Int?
+  creator              User?     @relation("QuoteCreator", fields: [creatorId], references: [id])
+  approvedById         Int?
+  approvedBy           User?     @relation("QuoteApprover", fields: [approvedById], references: [id])
+  repairItems          String?
+  partItems            String?
+  chargeItems          String?
+  costAmount           Decimal?
+  status               String    @default("DRAFT")
+  totalAmount          Decimal
+  rejectReason         String?
+  note                 String?
+  approvedAt           DateTime?
+  customerConfirmedAt  DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
+
+model PartsRequest {
+  id               Int                 @id @default(autoincrement())
+  requestNo        String              @unique
+  type             String
+  workOrderId      Int?
+  workOrder        WorkOrder?          @relation(fields: [workOrderId], references: [id])
+  fromWarehouseId  Int
+  fromWarehouse    Warehouse           @relation("PRFromWH", fields: [fromWarehouseId], references: [id])
+  toWarehouseId    Int
+  toWarehouse      Warehouse           @relation("PRToWH", fields: [toWarehouseId], references: [id])
+  status           String              @default("DRAFT")
+  totalQuantity    Int
+  rejectReason     String?
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  items            PartsRequestItem[]
+}
+
+model PartsRequestItem {
+  id              Int          @id @default(autoincrement())
+  partsRequestId  Int
+  partsRequest    PartsRequest @relation(fields: [partsRequestId], references: [id])
+  partId          Int
+  partNo          String
+  partName        String
+  partModel       String
+  quantity        Int
+  reservedQuantity Int      @default(0)
+  shippedQuantity  Int      @default(0)
+  receivedQuantity Int      @default(0)
+  createdAt       DateTime     @default(now())
+}
+
+model PartsReturn {
+  id               Int        @id @default(autoincrement())
+  returnNo         String     @unique
+  workOrderId      Int?
+  workOrder        WorkOrder? @relation(fields: [workOrderId], references: [id])
+  fromWarehouseId  Int
+  fromWarehouse    Warehouse  @relation("PRetFromWH", fields: [fromWarehouseId], references: [id])
+  toWarehouseId    Int
+  toWarehouse      Warehouse  @relation("PRetToWH", fields: [toWarehouseId], references: [id])
+  reason           String
+  qualityResult    String?
+  status           String     @default("DRAFT")
+  rejectReason     String?
+  confirmedAt      DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  items            PartsReturnItem[]
+}
+
+model PartsReturnItem {
+  id             Int         @id @default(autoincrement())
+  partsReturnId  Int
+  partsReturn    PartsReturn @relation(fields: [partsReturnId], references: [id])
+  partId         Int
+  partNo         String
+  partName       String
+  partModel      String
+  quantity       Int
+  qualityResult  String?
+  createdAt      DateTime    @default(now())
+}
+
+model ProcurementRequest {
+  id             Int        @id @default(autoincrement())
+  procurementNo  String     @unique
+  workOrderId    Int?
+  workOrder      WorkOrder? @relation(fields: [workOrderId], references: [id])
+  quoteId        Int?
+  supplierId     Int
+  supplier       Supplier   @relation(fields: [supplierId], references: [id])
+  status         String     @default("DRAFT")
+  estimatedCost  Decimal
+  actualCost     Decimal?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model Approval {
+  id           Int       @id @default(autoincrement())
+  type         String
+  sourceId     Int
+  sourceNo     String
+  summary      String
+  applicantId  Int
+  applicant    User      @relation("ApprovalApplicant", fields: [applicantId], references: [id])
+  approverId   Int?
+  approver     User?     @relation("ApprovalApprover", fields: [approverId], references: [id])
+  status       String    @default("PENDING")
+  rejectReason String?
+  createdAt    DateTime  @default(now())
+  resolvedAt   DateTime?
+}
+
+model Escalation {
+  id            Int       @id @default(autoincrement())
+  escalationNo  String    @unique
+  workOrderId   Int
+  workOrder     WorkOrder @relation(fields: [workOrderId], references: [id])
+  reason        String
+  status        String    @default("PENDING")
+  applicantId   Int
+  applicant     User?     @relation("EscalationApplicant", fields: [applicantId], references: [id])
+  approverId    Int?
+  approver      User?     @relation("EscalationApprover", fields: [approverId], references: [id])
+  rejectReason  String?
+  resolution    String?
+  attachments   Json?     @db.JsonB
+  resolvedBy    Int?
+  resolver      User?     @relation("EscalationResolver", fields: [resolvedBy], references: [id])
+  createdAt     DateTime  @default(now())
+  resolvedAt    DateTime?
+}
+
+model FollowUp {
+  id              Int       @id @default(autoincrement())
+  followUpNo      String    @unique
+  workOrderId     Int
+  workOrder       WorkOrder @relation(fields: [workOrderId], references: [id])
+  specialistId    Int
+  specialist      User?     @relation("FollowUpSpecialist", fields: [specialistId], references: [id])
+  status          String    @default("PENDING")
+  contactResult   String?
+  satisfaction    Int?
+  feedback        String?
+  needReopen      Boolean?
+  exceptionType   String?
+  exceptionNote   String?
+  createdAt       DateTime  @default(now())
+  completedAt     DateTime?
+  exceptionAt     DateTime?
+}
+
+// ─── 故障分类 ────────────────────────────────────────────
+
+model FaultType {
+  id          Int      @id @default(autoincrement())
+  name        String
+  code        String   @unique
+  parentId    Int?
+  parent      FaultType? @relation("FaultTypeTree", fields: [parentId], references: [id])
+  children    FaultType[] @relation("FaultTypeTree")
+  level       Int      @default(1)
+  sortOrder   Int      @default(0)
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── 供应商 ──────────────────────────────────────────────
+
+model Supplier {
+  id           Int       @id @default(autoincrement())
+  name         String
+  code         String    @unique
+  contactName  String?
+  contactPhone String?
+  address      String?
+  remark       String?
+  status       String    @default("ACTIVE")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  procurementRequests ProcurementRequest[]
+}
+
+// ─── 审计与系统 ──────────────────────────────────────────
+
+model AuditLog {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  action      String
+  module      String
+  targetId    Int?
+  targetName  String?
+  detail      String?
+  beforeValue String?
+  afterValue  String?
+  ip          String?
+  userAgent   String?
+  platform    String?
+  occurredAt  DateTime  @default(now())
+}
+
+// ─── 仓库与库存模型 ──────────────────────────────────────
+
+model Warehouse {
+  id                   Int       @id @default(autoincrement())
+  warehouseNo          String    @unique
+  name                 String
+  type                 String
+  outletId             Int?
+  outlet               Outlet?   @relation(fields: [outletId], references: [id])
+  outletName           String?
+  ownerEngineerId      Int?
+  ownerEngineerName    String?
+  ownerOutletIdSnapshot Int?
+  k3WarehouseCode      String?
+  fromPartsRequests    PartsRequest[] @relation("PRFromWH")
+  toPartsRequests      PartsRequest[] @relation("PRToWH")
+  fromPartsReturns     PartsReturn[]  @relation("PRetFromWH")
+  toPartsReturns       PartsReturn[]  @relation("PRetToWH")
+  status               String    @default("ACTIVE")
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
+
+model InventoryBalance {
+  id                Int      @id @default(autoincrement())
+  warehouseId       Int
+  warehouseName     String
+  partId            Int
+  partNo            String
+  partName          String
+  partModel         String
+  quantityOnHand    Int      @default(0)
+  quantityReserved  Int      @default(0)
+  quantityAvailable Int      @default(0)
+  quantityDamaged   Int      @default(0)
+  version           Int      @default(1)
+  updatedAt         DateTime @updatedAt
+
+  @@unique([warehouseId, partId])
+}
+
+model InventoryTransaction {
+  id                Int      @id @default(autoincrement())
+  transactionNo     String   @unique
+  type              String
+  direction         String
+  fromWarehouseId   Int?
+  fromWarehouseName String?
+  toWarehouseId     Int?
+  toWarehouseName   String?
+  partId            Int
+  partName          String
+  quantity          Int
+  beforeQuantity    Int
+  afterQuantity     Int
+  relatedOrderType  String?
+  relatedOrderId    Int?
+  operatorId        Int
+  operatorName      String
+  occurredAt        DateTime @default(now())
+  remark            String?
+}
+
+// ─── 物料主数据 ──────────────────────────────────────────
+
+model InventoryItem {
+  id             Int       @id @default(autoincrement())
+  partNo         String    @unique
+  k3MaterialCode String?
+  name           String
+  spec           String?
+  unit           String    @default("个")
+  unitPrice      Decimal?
+  category       String?
+  status         String    @default("ACTIVE")
+  lastSyncedAt   DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+// ─── 库存预留 ────────────────────────────────────────────
+
+model InventoryReservation {
+  id             Int       @id @default(autoincrement())
+  reservationNo  String    @unique
+  warehouseId    Int
+  partId         Int
+  quantity       Int
+  sourceType     String
+  sourceId       Int?
+  status         String    @default("ACTIVE")
+  reservedById   Int
+  reservedAt     DateTime  @default(now())
+  releasedAt     DateTime?
+  consumedAt     DateTime?
+  createdAt      DateTime  @default(now())
+}
+
+// ─── 库存调整 ────────────────────────────────────────────
+
+model InventoryAdjustment {
+  id             Int       @id @default(autoincrement())
+  adjustmentNo   String    @unique
+  warehouseId    Int
+  items          String
+  reason         String
+  approvedById   Int?
+  operatorId     Int
+  status         String    @default("PENDING")
+  createdAt      DateTime  @default(now())
+  approvedAt     DateTime?
+}
+
+// ─── K3 同步记录 ────────────────────────────────────────
+
+model K3SyncRecord {
+  id             Int       @id @default(autoincrement())
+  syncNo         String    @unique
+  syncType       String
+  startedAt      DateTime  @default(now())
+  finishedAt     DateTime?
+  status         String    @default("RUNNING")
+  totalCount     Int       @default(0)
+  successCount   Int       @default(0)
+  failedCount    Int       @default(0)
+  errorMessage   String?
+  createdAt      DateTime  @default(now())
+}
+
+// ─── 站内通知 ──────────────────────────────────────────
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  body      String
+  type      String   @default("WORK_ORDER") // WORK_ORDER, ESCALATION, APPROVAL, SYSTEM
+  refType   String?  // 关联实体类型: work_order, escalation, parts_request
+  refId     Int?     // 关联实体 ID
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

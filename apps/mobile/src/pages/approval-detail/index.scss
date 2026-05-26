@@ -1,0 +1,32 @@
+.appr-detail {
+  &__loading { padding: 80px; text-align: center; font-size: 28px; color: var(--muted); }
+  &__body { padding: 24px 32px; padding-bottom: 120px; }
+  &__card { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+  &__card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+  &__no { font-size: 28px; font-weight: bold; display: block; }
+  &__sub { font-size: 24px; color: var(--muted); display: block; margin-top: 4px; }
+  &__tag { padding: 4px 16px; border-radius: 32px; flex-shrink: 0; }
+  &__tag-text { font-size: 22px; font-weight: 500; }
+  &__title { font-size: 24px; font-weight: 500; display: block; margin-bottom: 16px; }
+  &__part { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--separator); &:last-child { border-bottom: none; } }
+  &__part-name { font-size: 28px; font-weight: 500; display: block; }
+  &__part-price { font-size: 24px; color: var(--muted); display: block; }
+  &__part-amount { font-size: 28px; font-weight: bold; }
+  &__cost-row { display: flex; justify-content: space-between; font-size: 28px; padding: 8px 0; &--total { border-top: 1px solid var(--separator); padding-top: 16px; font-weight: bold; } }
+  &__cost-label { color: var(--muted); }
+  &__cost-total { color: var(--accent); }
+  &__remark { font-size: 24px; color: var(--muted); display: block; margin-top: 16px; }
+  &__footer { position: sticky; bottom: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 24px 32px; display: flex; gap: 16px; }
+  &__reject-btn { flex: 1; height: 88px; border-radius: var(--radius-md); background: var(--danger); display: flex; align-items: center; justify-content: center; &:active { opacity: 0.8; } }
+  &__reject-text { color: var(--danger-foreground); font-size: 32px; font-weight: 500; }
+  &__confirm-btn { flex: 1; height: 88px; border-radius: var(--radius-md); background: var(--accent); display: flex; align-items: center; justify-content: center; &:active { opacity: 0.8; } }
+  &__confirm-text { color: var(--accent-foreground); font-size: 32px; font-weight: 500; }
+  &__overlay { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); }
+  &__dialog { background: var(--surface); border-radius: var(--radius-xl); padding: 40px 32px; width: 640px; }
+  &__dialog-title { font-size: 32px; font-weight: 600; display: block; margin-bottom: 16px; }
+  &__dialog-desc { font-size: 24px; color: var(--muted); display: block; margin-bottom: 32px; }
+  &__dialog-actions { display: flex; gap: 16px; }
+  &__dialog-cancel { flex: 1; height: 80px; border-radius: var(--radius-md); background: var(--surface-secondary); display: flex; align-items: center; justify-content: center; font-size: 28px; }
+  &__dialog-confirm { flex: 1; height: 80px; border-radius: var(--radius-md); background: var(--danger); display: flex; align-items: center; justify-content: center; &:active { opacity: 0.8; } }
+  &__dialog-confirm-text { color: var(--danger-foreground); font-size: 28px; font-weight: 500; }
+}

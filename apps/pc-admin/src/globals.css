@@ -1,0 +1,225 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+/* MiSans Font Faces */
+@font-face {
+  font-family: 'MiSans';
+  src: url('/fonts/MiSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MiSans';
+  src: url('/fonts/MiSans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MiSans';
+  src: url('/fonts/MiSans-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'MiSans';
+  src: url('/fonts/MiSans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Light Theme (HeroUI v3 tokens) */
+:root,
+.light,
+.default,
+[data-theme="light"],
+[data-theme="default"] {
+  color-scheme: light;
+
+  /* Primitive Colors */
+  --white: oklch(100% 0 0);
+  --black: oklch(0% 0 0);
+  --snow: oklch(99.11% 0 0);
+  --eclipse: oklch(21.03% 0.0059 285.89);
+
+  /* Spacing */
+  --spacing: 0.25rem;
+
+  /* Border */
+  --border-width: 1px;
+  --disabled-opacity: 0.5;
+
+  /* Radius */
+  --radius: 0.5rem;
+  --field-radius: 0.75rem;
+
+  /* Background & Foreground */
+  --background: oklch(97.02% 0 0);
+  --foreground: var(--eclipse);
+
+  /* Surface */
+  --surface: var(--white);
+  --surface-foreground: var(--foreground);
+  --surface-secondary: oklch(95% 0.002 286);
+  --surface-secondary-foreground: var(--foreground);
+  --surface-tertiary: oklch(93% 0.003 286);
+  --surface-tertiary-foreground: var(--foreground);
+
+  /* Overlay */
+  --overlay: var(--white);
+  --overlay-foreground: var(--foreground);
+
+  /* Muted */
+  --muted: oklch(55.17% 0.0138 285.94);
+
+  /* Default */
+  --default: oklch(94% 0.001 286.375);
+  --default-foreground: var(--eclipse);
+
+  /* Accent */
+  --accent: oklch(62.04% 0.195 253.83);
+  --accent-foreground: var(--snow);
+  --accent-hover: oklch(55% 0.195 253.83);
+
+  /* Field */
+  --field-background: var(--white);
+  --field-foreground: oklch(21.03% 0.0059 285.89);
+  --field-placeholder: var(--muted);
+  --field-border: transparent;
+
+  /* Semantic */
+  --success: oklch(73.29% 0.1935 150.81);
+  --success-foreground: var(--eclipse);
+
+  --warning: oklch(78.19% 0.1585 72.33);
+  --warning-foreground: var(--eclipse);
+
+  --danger: oklch(65.32% 0.2328 25.74);
+  --danger-foreground: var(--snow);
+
+  /* Border & Focus */
+  --border: oklch(92% 0.004 286.32);
+  --separator: oklch(92% 0.004 286.32);
+  --focus: var(--accent);
+  --link: var(--foreground);
+  --backdrop: rgba(0, 0, 0, 0.5);
+
+  /* Shadows */
+  --surface-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.06), 0 0 1px 0 rgba(0, 0, 0, 0.06);
+  --overlay-shadow: 0 4px 16px 0 rgba(24, 24, 27, 0.08), 0 8px 24px 0 rgba(24, 24, 27, 0.09);
+
+  /* App-specific */
+  --scrollbar: oklch(87.10% 0.0015 253.83);
+  --segment: var(--white);
+  --segment-foreground: var(--foreground);
+  --font-sans: 'MiSans', sans-serif;
+}
+
+/* Dark Theme (HeroUI v3 tokens) */
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Primitive Colors */
+  --white: oklch(100% 0 0);
+  --black: oklch(0% 0 0);
+  --snow: oklch(99.11% 0 0);
+  --eclipse: oklch(21.03% 0.0059 285.89);
+
+  /* Spacing */
+  --spacing: 0.25rem;
+
+  /* Border */
+  --border-width: 1px;
+  --disabled-opacity: 0.5;
+
+  /* Radius */
+  --radius: 0.5rem;
+  --field-radius: 0.75rem;
+
+  /* Background & Foreground */
+  --background: oklch(14% 0.005 285.89);
+  --foreground: var(--snow);
+
+  /* Surface */
+  --surface: oklch(18% 0.005 285.89);
+  --surface-foreground: var(--foreground);
+  --surface-secondary: oklch(22% 0.005 285.89);
+  --surface-secondary-foreground: var(--foreground);
+  --surface-tertiary: oklch(26% 0.005 285.89);
+  --surface-tertiary-foreground: var(--foreground);
+
+  /* Overlay */
+  --overlay: oklch(22% 0.005 285.89);
+  --overlay-foreground: var(--foreground);
+
+  /* Muted */
+  --muted: oklch(55% 0.01 285.94);
+
+  /* Default */
+  --default: oklch(25% 0.005 285.89);
+  --default-foreground: var(--snow);
+
+  /* Accent */
+  --accent: oklch(65% 0.195 253.83);
+  --accent-foreground: var(--snow);
+  --accent-hover: oklch(70% 0.195 253.83);
+
+  /* Field */
+  --field-background: oklch(20% 0.005 285.89);
+  --field-foreground: var(--snow);
+  --field-placeholder: var(--muted);
+  --field-border: transparent;
+
+  /* Semantic */
+  --success: oklch(75% 0.19 150.81);
+  --success-foreground: var(--eclipse);
+
+  --warning: oklch(80% 0.15 72.33);
+  --warning-foreground: var(--eclipse);
+
+  --danger: oklch(68% 0.23 25.74);
+  --danger-foreground: var(--snow);
+
+  /* Border & Focus */
+  --border: oklch(30% 0.005 285.89);
+  --separator: oklch(30% 0.005 285.89);
+  --focus: var(--accent);
+  --link: var(--foreground);
+  --backdrop: rgba(0, 0, 0, 0.5);
+
+  /* Shadows */
+  --surface-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --overlay-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.3), 0 8px 24px 0 rgba(0, 0, 0, 0.35);
+
+  /* App-specific */
+  --scrollbar: oklch(70.50% 0.0015 253.83);
+  --segment: oklch(39.64% 0.0015 253.83);
+  --segment-foreground: var(--snow);
+  --font-sans: 'MiSans', sans-serif;
+}
+
+/* Global Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

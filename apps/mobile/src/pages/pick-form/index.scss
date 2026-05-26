@@ -1,0 +1,25 @@
+.pick-form {
+  display: flex; flex-direction: column; min-height: 100vh;
+  &__body { flex: 1; padding: 24px 32px; padding-bottom: 120px; }
+  &__card { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+  &__card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  &__card-title { font-size: 28px; font-weight: 500; }
+  &__field { margin-bottom: 24px; &:last-child { margin-bottom: 0; } }
+  &__label { font-size: 24px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 12px; }
+  &__input { width: 100%; height: 80px; padding: 0 16px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--field-background); color: var(--field-foreground); font-size: 28px; box-sizing: border-box; }
+  &__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  &__chip { padding: 8px 24px; border-radius: 64px; background: var(--surface-secondary); &:active { opacity: 0.7; } &--active { background: var(--accent); } }
+  &__chip-text { font-size: 24px; font-weight: 500; }
+  &__chip--active &__chip-text { color: var(--accent-foreground); }
+  &__add-btn { padding: 8px 20px; border-radius: 32px; background: var(--accent); &:active { opacity: 0.8; } }
+  &__add-text { font-size: 24px; color: var(--accent-foreground); font-weight: 500; }
+  &__part-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  &__part-input { flex: 1; height: 72px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--field-background); color: var(--field-foreground); font-size: 26px; box-sizing: border-box; }
+  &__part-qty { width: 120px; height: 72px; padding: 0 12px; text-align: center; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--field-background); color: var(--field-foreground); font-size: 26px; box-sizing: border-box; }
+  &__remove { width: 60px; height: 72px; display: flex; align-items: center; justify-content: center; }
+  &__remove-text { font-size: 36px; color: var(--danger); font-weight: bold; }
+  &__textarea { width: 100%; min-height: 120px; padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--field-background); color: var(--field-foreground); font-size: 28px; box-sizing: border-box; }
+  &__footer { position: sticky; bottom: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 24px 32px; }
+  &__submit { height: 88px; border-radius: var(--radius-md); background: var(--accent); display: flex; align-items: center; justify-content: center; &:active { opacity: 0.8; } &--disabled { opacity: 0.4; } }
+  &__submit-text { color: var(--accent-foreground); font-size: 32px; font-weight: 500; }
+}

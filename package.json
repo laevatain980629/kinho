@@ -1,0 +1,40 @@
+{
+  "name": "kinho",
+  "private": true,
+  "scripts": {
+    "dev:pc": "pnpm --filter pc-admin dev",
+    "dev:h5": "pnpm --filter customer-h5 dev",
+    "dev:mobile-web": "pnpm --filter mobile-web dev",
+    "dev:taro": "pnpm --filter kinho-mobile dev:weapp",
+    "build": "pnpm -r build",
+    "build:pc": "pnpm --filter pc-admin build",
+    "build:h5": "pnpm --filter customer-h5 build",
+    "build:mobile-web": "pnpm --filter mobile-web build",
+    "build:taro": "pnpm --filter kinho-mobile build:weapp"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@parcel/watcher",
+      "@prisma/client",
+      "@prisma/engines",
+      "@swc/core",
+      "@tarojs/binding",
+      "@tarojs/cli",
+      "core-js-pure",
+      "core-js",
+      "esbuild",
+      "prisma",
+      "puppeteer"
+    ]
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/bcryptjs": "^3.0.0",
+    "playwright": "^1.59.1",
+    "puppeteer": "^24.42.0"
+  }
+}

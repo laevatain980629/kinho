@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+**/dist/
+apps/mobile/dist-weapp/
+*.tsbuildinfo
+.turbo/
+
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+!.env.docker.example
+
+# Local tool state
+.superpowers/
+.heroui-docs/
+.playwright-cli/
+.code-review-graph/
+.workbuddy/
+.mcp.json
+debug/
+
+# Test outputs
+test-results/
+test-artifacts/
+**/artifacts/
+playwright-report/
+coverage/
+
+# Local-only project notes and design previews
+doc/
+docs/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.log
+*:Zone.Identifier

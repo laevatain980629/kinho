@@ -1,0 +1,17 @@
+{
+  "name": "@kinho/shared-components",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@heroui/react": "latest",
+    "lucide-react": "^1.14.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0"
+  }
+}

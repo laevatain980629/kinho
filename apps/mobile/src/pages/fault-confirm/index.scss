@@ -1,0 +1,19 @@
+.fault-confirm {
+  &__body { padding: 24px 32px; padding-bottom: 120px; }
+  &__card { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+  &__label { font-size: 24px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 12px; }
+  &__required { color: var(--danger); font-size: 24px; }
+  &__optional { font-size: 22px; color: var(--muted); }
+  &__error { font-size: 22px; color: var(--danger); display: block; margin: 8px 0; }
+  &__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  &__chip { padding: 8px 24px; border-radius: 64px; background: var(--surface-secondary); &:active { opacity: 0.7; } &--active { background: var(--accent); } }
+  &__chip-text { font-size: 24px; font-weight: 500; }
+  &__chip--active &__chip-text { color: var(--accent-foreground); }
+  &__textarea { width: 100%; min-height: 120px; padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--field-background); color: var(--field-foreground); font-size: 28px; box-sizing: border-box; }
+  &__checks { display: flex; flex-direction: column; gap: 16px; }
+  &__check { display: flex; align-items: center; gap: 12px; &:active { opacity: 0.7; } }
+  &__check-box { font-size: 36px; }
+  &__check-label { font-size: 28px; }
+  &__submit { height: 88px; border-radius: var(--radius-md); background: var(--accent); display: flex; align-items: center; justify-content: center; margin-top: 16px; &:active { opacity: 0.8; } &--disabled { opacity: 0.4; } }
+  &__submit-text { color: var(--accent-foreground); font-size: 32px; font-weight: 500; }
+}

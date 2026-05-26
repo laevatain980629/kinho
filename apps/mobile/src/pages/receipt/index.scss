@@ -1,0 +1,30 @@
+.receipt {
+  &__body { padding: 24px 32px; padding-bottom: 120px; }
+  &__card { background: var(--surface); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+  &__card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  &__card-title { font-size: 28px; font-weight: 500; }
+  &__label { font-size: 24px; font-weight: 500; color: var(--muted); display: block; margin-bottom: 12px; }
+  &__required { color: var(--danger); font-size: 24px; }
+  &__optional { font-size: 22px; color: var(--muted); }
+  &__textarea { width: 100%; min-height: 120px; padding: 16px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--field-background); color: var(--field-foreground); font-size: 28px; box-sizing: border-box; }
+  &__input { flex: 1; height: 72px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--field-background); color: var(--field-foreground); font-size: 26px; box-sizing: border-box; margin-right: 8px; &--sm { font-size: 24px; } }
+  &__add-btn { padding: 8px 20px; border-radius: 32px; background: var(--accent); &:active { opacity: 0.8; } }
+  &__add-text { font-size: 24px; color: var(--accent-foreground); font-weight: 500; }
+  &__item-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 12px; }
+  &__item-row { display: flex; align-items: center; margin-bottom: 8px; &:last-child { margin-bottom: 0; } }
+  &__part-row { display: flex; align-items: center; margin-bottom: 16px; }
+  &__remove { width: 60px; height: 72px; display: flex; align-items: center; justify-content: center; }
+  &__remove-text { font-size: 36px; color: var(--danger); font-weight: bold; }
+  &__qty-input { width: 140px; height: 72px; padding: 0 12px; text-align: center; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--field-background); color: var(--field-foreground); font-size: 26px; box-sizing: border-box; }
+  &__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  &__chip { padding: 6px 16px; border-radius: 64px; background: var(--surface-secondary); &:active { opacity: 0.7; } &--active { background: var(--accent); } }
+  &__chip-text { font-size: 22px; font-weight: 500; }
+  &__chip--active &__chip-text { color: var(--accent-foreground); }
+  &__amount { padding: 0 16px; height: 72px; display: flex; align-items: center; border-radius: var(--radius-md); background: var(--surface-secondary); border: 1px solid var(--border); }
+  &__amount-text { font-size: 24px; font-weight: 500; }
+  &__total { display: flex; align-items: center; justify-content: flex-end; gap: 16px; margin-top: 16px; padding: 16px; background: var(--surface-secondary); border-radius: var(--radius-md); }
+  &__total-label { font-size: 24px; color: var(--muted); }
+  &__total-value { font-size: 36px; font-weight: bold; }
+  &__submit { height: 88px; border-radius: var(--radius-md); background: var(--accent); display: flex; align-items: center; justify-content: center; margin-top: 16px; &:active { opacity: 0.8; } &--disabled { opacity: 0.4; } }
+  &__submit-text { color: var(--accent-foreground); font-size: 32px; font-weight: 500; }
+}

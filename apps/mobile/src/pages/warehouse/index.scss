@@ -1,0 +1,81 @@
+.warehouse {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &__header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--surface);
+    border-bottom: 1px solid var(--separator);
+  }
+  &__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px 16px;
+  }
+  &__title { font-size: 32px; font-weight: 600; }
+  &__add-btn {
+    background: var(--accent);
+    padding: 8px 24px;
+    border-radius: 64px;
+  }
+  &__add-btn-text { font-size: 24px; color: var(--accent-foreground); font-weight: 500; }
+
+  &__tabs {
+    display: flex;
+    gap: 8px;
+    padding: 0 32px 16px;
+  }
+  &__tab {
+    padding: 8px 24px;
+    border-radius: 64px;
+    background: var(--surface-secondary);
+    &:active { opacity: 0.7; }
+    &--active { background: var(--accent); }
+  }
+  &__tab-text { font-size: 24px; font-weight: 500; }
+  &__tab--active &__tab-text { color: var(--accent-foreground); }
+
+  &__list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 32px;
+  }
+
+  &__item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  &__item-row { display: flex; justify-content: space-between; align-items: flex-start; }
+  &__item-name { font-size: 28px; font-weight: 500; display: block; }
+  &__item-model { font-size: 24px; color: var(--muted); display: block; margin-top: 4px; }
+  &__item-qty { font-size: 40px; font-weight: bold; color: var(--accent); }
+  &__item-detail { font-size: 24px; color: var(--muted); margin-top: 16px; display: block; }
+
+  &__card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 16px;
+    &:active { opacity: 0.8; }
+  }
+  &__card-row { display: flex; justify-content: space-between; align-items: flex-start; }
+  &__card-no { font-size: 28px; font-weight: 500; }
+  &__card-sub { font-size: 24px; color: var(--muted); display: block; margin-top: 8px; }
+
+  &__badge {
+    padding: 4px 16px; border-radius: 32px; font-size: 22px;
+    &.bg-gray { background: var(--status-gray-bg); .warehouse__badge-text { color: var(--status-gray-text); } }
+    &.bg-amber { background: var(--status-amber-bg); .warehouse__badge-text { color: var(--status-amber-text); } }
+    &.bg-blue { background: var(--status-blue-bg); .warehouse__badge-text { color: var(--status-blue-text); } }
+    &.bg-green { background: var(--status-green-bg); .warehouse__badge-text { color: var(--status-green-text); } }
+    &.bg-red { background: var(--status-red-bg); .warehouse__badge-text { color: var(--status-red-text); } }
+    &.bg-purple { background: var(--status-purple-bg); .warehouse__badge-text { color: var(--status-purple-text); } }
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE "Escalation" ADD COLUMN IF NOT EXISTS "attachments" JSONB;

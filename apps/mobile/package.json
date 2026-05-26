@@ -1,0 +1,60 @@
+{
+  "name": "kinho-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kinho 工程机械售后 - 移动端 (Taro 小程序 + H5)",
+  "templateInfo": {
+    "name": "default",
+    "typescript": true,
+    "css": "sass"
+  },
+  "scripts": {
+    "build:weapp": "taro build --type weapp",
+    "build:swan": "taro build --type swan",
+    "build:alipay": "taro build --type alipay",
+    "build:tt": "taro build --type tt",
+    "build:h5": "taro build --type h5",
+    "build:rn": "taro build --type rn",
+    "dev:weapp": "npm run build:weapp -- --watch",
+    "dev:swan": "npm run build:swan -- --watch",
+    "dev:alipay": "npm run build:alipay -- --watch",
+    "dev:tt": "npm run build:tt -- --watch",
+    "dev:h5": "npm run build:h5 -- --watch"
+  },
+  "browserslist": [
+    "last 3 versions",
+    "Android >= 4.1",
+    "ios >= 8"
+  ],
+  "dependencies": {
+    "@kinho/shared-hooks": "workspace:*",
+    "@kinho/shared-types": "workspace:*",
+    "@nutui/icons-react-taro": "^3.0.0",
+    "@nutui/nutui-react-taro": "^3.0.0",
+    "@tarojs/components": "4.2.0",
+    "@tarojs/helper": "4.2.0",
+    "@tarojs/plugin-framework-react": "4.2.0",
+    "@tarojs/plugin-platform-h5": "4.2.0",
+    "@tarojs/plugin-platform-weapp": "4.2.0",
+    "@tarojs/react": "4.2.0",
+    "@tarojs/runtime": "4.2.0",
+    "@tarojs/shared": "4.2.0",
+    "@tarojs/taro": "4.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.0",
+    "@babel/preset-env": "^7.29.3",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@babel/runtime": "^7.7.7",
+    "@tarojs/cli": "4.2.0",
+    "@tarojs/webpack5-runner": "4.2.0",
+    "@types/react": "^18.3.0",
+    "babel-preset-taro": "4.2.0",
+    "postcss": "^8.4.18",
+    "sass": "^1.80.0",
+    "typescript": "^5.7.0"
+  }
+}
