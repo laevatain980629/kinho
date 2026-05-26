@@ -17,7 +17,9 @@ async function bootstrap() {
   app.useBodyParser('urlencoded', { limit: '10mb', extended: true });
 
   app.setGlobalPrefix('api');
-  app.enableCors();
+  app.enableCors({
+    origin: ['https://kinhoservice.site', 'https://kinhoservice.site:8443'],
+  });
 
   // X-Platform 中间件
   const platformMiddleware = new PlatformMiddleware();
@@ -32,14 +34,16 @@ async function bootstrap() {
     new RolesGuard(app.get(Reflector), app.get(JwtService)),
   );
 
-  const config = new DocumentBuilder()
-    .setTitle('Machinery Guard API')
-    .setDescription('工程机械售后服务管理系统 API')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document);
+  if (process.env.NODE_ENV !== 'production') {
+    const config = new DocumentBuilder()
+      .setTitle('Machinery Guard API')
+      .setDescription('工程机械售后服务管理系统 API')
+      .setVersion('1.0')
+      .addBearerAuth()
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api/docs', app, document);
+  }
 
   const port = Number(process.env.PORT || 3000);
   await app.listen(port, '0.0.0.0');
